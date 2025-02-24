@@ -106,6 +106,7 @@ RUN npm ci --only=production
 
 # Set environment variable untuk Prisma
 ENV NODE_ENV=production
-
+ENV DATABASE_URL="postgresql://postgres:12345678@localhost:4321/ecommerce"
+ENV JWT_SECRET=mysecretkey
 # Jalankan Prisma migrate hanya saat container berjalan
 CMD npx prisma migrate deploy && npm start
