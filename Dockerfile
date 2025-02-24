@@ -37,7 +37,7 @@
 
 
 # Gunakan base image dengan Node.js dan support untuk Prisma
-FROM node:18-alpine AS builder
+FROM node:18-alpine3.18 AS builder
 
 # Set working directory
 WORKDIR /app
