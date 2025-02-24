@@ -36,38 +36,76 @@
 # CMD ["npm", "run", "start"]
 
 
-# Gunakan base image dengan Node.js dan support untuk Prisma
-FROM node:18-alpine3.18 AS builder
 
-# Set working directory
+
+###################
+
+# # Gunakan base image dengan Node.js dan support untuk Prisma
+# FROM node:18-alpine3.18 AS builder
+
+# # Set working directory
+# WORKDIR /app
+
+# # Install dependencies
+# COPY package.json package-lock.json ./
+# RUN npm install --frozen-lockfile
+
+# # Install libssl1.1 untuk Prisma
+# RUN apk add --no-cache openssl1.1-compat
+
+# # Copy seluruh project
+# COPY . .
+
+# # Generate Prisma Client & lakukan migrasi database
+# RUN npx prisma generate
+# RUN npx prisma migrate deploy
+
+# # Build Next.js project
+# RUN npm run build
+
+# # Stage runtime
+# FROM node:18-alpine AS runner
+# WORKDIR /app
+
+# # Copy hasil build dari stage builder
+# COPY --from=builder /app ./
+
+# # Expose port untuk Next.js
+# EXPOSE 3000
+
+# # Jalankan Next.js
+# CMD ["npm", "run", "start"]
+
+
+# Gunakan Multi-stage Build
+FROM node:18-alpine AS builder
+
+# Set workdir
 WORKDIR /app
 
-# Install dependencies
+# Copy package.json dan install dependencies
 COPY package.json package-lock.json ./
-RUN npm install --frozen-lockfile
-
-# Install libssl1.1 untuk Prisma
-RUN apk add --no-cache openssl1.1-compat
+RUN npm install
 
 # Copy seluruh project
 COPY . .
 
-# Generate Prisma Client & lakukan migrasi database
-RUN npx prisma generate
-RUN npx prisma migrate deploy
-
-# Build Next.js project
+# Build Next.js
 RUN npm run build
 
-# Stage runtime
+# --- Tahap Production ---
 FROM node:18-alpine AS runner
+
 WORKDIR /app
 
 # Copy hasil build dari stage builder
 COPY --from=builder /app ./
 
-# Expose port untuk Next.js
-EXPOSE 3000
+# Install dependencies tanpa devDependencies
+RUN npm ci --only=production
 
-# Jalankan Next.js
-CMD ["npm", "run", "start"]
+# Set environment variable untuk Prisma
+ENV NODE_ENV=production
+
+# Jalankan Prisma migrate hanya saat container berjalan
+CMD npx prisma migrate deploy && npm start
