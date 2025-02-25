@@ -97,7 +97,7 @@ function Wishlist({ products }: Props) {
 }
 
 export async function getServerSideProps() {
-  const products = await axios.get("/api/products");
+  const products = await axios.get("http://localhost:3000/api/products");
 
   return {
     props: {

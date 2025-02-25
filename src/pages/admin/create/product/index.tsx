@@ -34,7 +34,7 @@ function CreateProduct({ categories }: Props) {
 
     if (!name || !price || !category || !imageUrl || !description || !tags || category === "Pick a category...") return;
 
-    const response = await axios.post("/api/create/product", {
+    const response = await axios.post("http://localhost:3000/api/create/product", {
       id: uuidv4(),
       name: name,
       description: description,
@@ -165,7 +165,7 @@ function CreateProduct({ categories }: Props) {
 }
 
 export async function getServerSideProps() {
-  const response = await axios.get("/api/categories");
+  const response = await axios.get("http://localhost:3000/api/categories");
 
   return {
     props: {

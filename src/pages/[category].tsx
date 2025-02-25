@@ -44,7 +44,7 @@ function Home({ products, categories }: Props) {
 export async function getServerSideProps(context: NextPageContext) {
   const { page, category, tags } = context.query;
 
-  const products = await axios.get("/api/products", {
+  const products = await axios.get("http://localhost:3000/api/products", {
     params: {
       take: 10,
       skip: 10 * (Number(page) - 1),
@@ -52,7 +52,7 @@ export async function getServerSideProps(context: NextPageContext) {
       tags: JSON.stringify(tags),
     },
   });
-  const categories = await axios.get("/api/categories");
+  const categories = await axios.get("http://localhost:3000/api/categories");
 
   return {
     props: {

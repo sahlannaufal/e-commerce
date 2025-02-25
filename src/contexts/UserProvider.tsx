@@ -56,7 +56,7 @@ function UserProvider({ children }: Props) {
 
       if (!eCommerceToken) return;
 
-      const response = await axios.get(`/api/users/authenticate/${eCommerceToken}`);
+      const response = await axios.get(`http://localhost:3000/api/users/authenticate/${eCommerceToken}`);
 
       setUser(response.data);
       return;
@@ -66,7 +66,7 @@ function UserProvider({ children }: Props) {
   }, []);
 
   const logIn = async ({ email, password }: LogInProps) => {
-    const response = await axios.post(`/api/users/`, {
+    const response = await axios.post(`http://localhost:3000/api/users/`, {
       email,
       password,
     });
@@ -90,7 +90,7 @@ function UserProvider({ children }: Props) {
   };
 
   const signUp = async (user: UserProps) => {
-    const response = await axios.post("/api/create/user", user);
+    const response = await axios.post("http://localhost:3000/api/create/user", user);
 
     if (response.status === 200) {
       setUser(response.data.user);
