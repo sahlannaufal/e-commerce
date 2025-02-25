@@ -4,4 +4,13 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = nextConfig
+module.exports = {
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*", // Semua request ke /api/*
+        destination: "http://103.149.177.11/:path*", // Diteruskan ke backend HTTP
+      },
+    ];
+  },
+};
