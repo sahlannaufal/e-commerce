@@ -55,8 +55,8 @@ function Product({ product, products }: Props) {
 export default Product;
 
 export async function getServerSideProps(context: any) {
-  const product = await axios.get(`http://localhost:3000/api/products/${context.params.id}`);
-  const products = await axios.get("http://localhost:3000/api/products");
+  const product = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/products/${context.params.id}`);
+  const products = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/products`);
 
   return {
     props: {

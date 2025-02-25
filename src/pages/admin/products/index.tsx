@@ -14,7 +14,7 @@ function Products() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const products = await axios.get("http://localhost:3000/api/products");
+      const products = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/products`);
       setProducts(products.data);
     };
 

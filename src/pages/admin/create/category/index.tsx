@@ -23,7 +23,7 @@ function CreateCategory() {
 
     if (!category) return;
 
-    const response = await axios.post("http://localhost:3000/api/create/category", {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/create/category`, {
       name: category,
       slug: fromNameToSlug(category),
     });

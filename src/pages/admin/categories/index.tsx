@@ -19,7 +19,7 @@ function Categories() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const categories = await axios.get("http://localhost:3000/api/categories");
+      const categories = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/categories`);
       setCategories(categories.data);
     };
 
