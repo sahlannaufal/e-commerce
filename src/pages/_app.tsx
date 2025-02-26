@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Script from "next/script";
 
-const GA_TRACKING_ID = "G-L10K70P19F";
-const GTM_ID = "GTM-MXFFL3VP";
+const GA_TRACKING_ID = "G-9T81RL48Q6";
+const GTM_ID = "GTM-NHPKKVJF";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
