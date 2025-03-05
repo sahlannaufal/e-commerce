@@ -32,26 +32,27 @@ function Product({ id, showSidebar, product }: Props) {
   };
 
   const handleClick = () => {
-    // Kirim data ke GTM
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: "productClick",
-      ecommerce: {
-        click: {
-          actionField: { list: "Product List" }, // Sesuaikan jika ada kategori tertentu
-          products: [
-            {
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              category: product.categoryName,
-              image: product.imageUrl,
-              tags: product.tags,
-            },
-          ],
+    if (typeof window !== "undefined") {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "productClick",
+        ecommerce: {
+          click: {
+            actionField: { list: "Product List" },
+            products: [
+              {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                category: product.categoryName,
+                image: product.imageUrl,
+                tags: product.tags,
+              },
+            ],
+          },
         },
-      },
-    });
+      });
+    }
 
     // Navigasi ke halaman produk
     router.push(`/product/${product.id}`);
