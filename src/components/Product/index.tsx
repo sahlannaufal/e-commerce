@@ -34,6 +34,26 @@ function Product({ id, showSidebar, product }: Props) {
   const handleClick = () => {
     if (typeof window !== "undefined") {
       window.dataLayer = window.dataLayer || [];
+
+      console.log("Pushing to GTM:", {
+        event: "productClick",
+        ecommerce: {
+          click: {
+            actionField: { list: "Product List" },
+            products: [
+              {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                category: product.categoryName,
+                image: product.imageUrl,
+                tags: product.tags,
+              },
+            ],
+          },
+        },
+      });
+      
       window.dataLayer.push({
         event: "productClick",
         ecommerce: {
@@ -57,10 +77,12 @@ function Product({ id, showSidebar, product }: Props) {
     // Navigasi ke halaman produk
     router.push(`/product/${product.id}`);
   };
+  console.log("Product ID:", product.id);
+
 
   return (
     <div
-      id={id}
+      id={`${String(product.id)}`}
       onClick={handleClick}
       className={`product relative flex flex-col w-full h-fit justify-between overflow-hidden rounded-2xl border-[1px] border-gray-300 bg-gray-100 cursor-pointer transition-colors hover:bg-gray-200`}
     >
