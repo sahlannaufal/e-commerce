@@ -16,11 +16,12 @@ export interface ProductProps {
 }
 
 interface Props {
+  id: string;
   showSidebar: boolean;
   product: ProductProps;
 }
 
-function Product({ showSidebar, product }: Props) {
+function Product({ id, showSidebar, product }: Props) {
   const router = useRouter();
 
   const { addToCart } = useContext(CartContext);
@@ -30,15 +31,62 @@ function Product({ showSidebar, product }: Props) {
     return price.toFixed(2);
   };
 
+  const handleClick = () => {
+    // Kirim data ke GTM
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "productClick",
+      ecommerce: {
+        click: {
+          actionField: { list: "Product List" }, // Sesuaikan jika ada kategori tertentu
+          products: [
+            {
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              category: product.categoryName,
+              image: product.imageUrl,
+              tags: product.tags,
+            },
+          ],
+        },
+      },
+    });
+
+    // Navigasi ke halaman produk
+    router.push(`/product/${product.id}`);
+  };
+
   return (
-    <li
-      onClick={() => router.push(`/product/${product.id}`)}
-      className={`relative flex flex-col w-full h-fit justify-between overflow-hidden rounded-2xl border-[1px] border-gray-300 bg-gray-100 cursor-pointer transition-colors hover:bg-gray-200`}
+    <div
+      id={id}
+      onClick={handleClick}
+      className={`product relative flex flex-col w-full h-fit justify-between overflow-hidden rounded-2xl border-[1px] border-gray-300 bg-gray-100 cursor-pointer transition-colors hover:bg-gray-200`}
     >
       <button
         onClick={(e) => {
           e.stopPropagation();
           addToWishlist(product);
+
+          // Kirim data ke GTM saat ditambahkan ke wishlist
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "addToWishlist",
+            ecommerce: {
+              add: {
+                products: [
+                  {
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    category: product.categoryName,
+                    image: product.imageUrl,
+                    tags: product.tags,
+                  },
+                ],
+              },
+            },
+          });
         }}
         className="group absolute right-4 top-4 p-2"
       >
@@ -80,7 +128,7 @@ function Product({ showSidebar, product }: Props) {
           </button>
         </div>
       </div>
-    </li>
+    </div>
   );
 }
 

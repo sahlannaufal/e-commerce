@@ -133,7 +133,8 @@ function Products({ showSidebar, category, products }: Props) {
         } p-8 gap-8 overflow-scroll`}
       >
         {filteredProducts?.length > 0 ? (
-          filteredProducts.map((product) => <Product key={product.id} showSidebar={showSidebar} product={product} />)
+          filteredProducts.map((product) => 
+          <Product key={product.id} id={product.id} showSidebar={showSidebar} product={product} />)
         ) : (
           <span className="absolute w-full text-center text-gray-700">There are no items matching your filters.</span>
         )}
